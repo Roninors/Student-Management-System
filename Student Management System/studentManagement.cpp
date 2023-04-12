@@ -13,6 +13,7 @@ private:
     int filSub;
     int mapehSub;
     int scieSub;
+    float averageGrade;
 
 public:
     Students(std::string name, int age, std::string course, int userId, int year)
@@ -27,6 +28,7 @@ public:
         filSub = 0;
         mapehSub = 0;
         scieSub = 0;
+        averageGrade = 0.0;
     }
 
     std::string getStudName()
@@ -105,9 +107,14 @@ public:
         std::cout << "English: " << engSub << "\n";
         std::cout << "Filipino: " << filSub << "\n";
         std::cout << "Mapeh: " << mapehSub << "\n";
-        std::cout << "Science: " << scieSub;
+        std::cout << "Science: " << scieSub << "\n";
+        std::cout << "Average Grade: " << averageGrade;
  
         std::cout << "\n==================================================\n";
+    }
+
+    void calcAverage() {
+      averageGrade = float(mathSub + engSub + filSub + mapehSub + scieSub) / 5;
     }
 };
 
@@ -141,6 +148,7 @@ public:
                 studArr[i] = nullptr;
 
                 std::cout << "Student deleted!" << std::endl;
+                studentArrSize--;
                 break;
             }
         }
@@ -290,7 +298,7 @@ public:
 
                         break;
                     }
-
+                    studArr[i]->calcAverage();
                     std::cout << "\nUpdated Student Grades" << "\n";
                     studArr[i]->showStudents();
 
