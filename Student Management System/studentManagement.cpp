@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <iomanip>
 class Students
 {
 private:
@@ -16,12 +17,12 @@ private:
     float averageGrade;
 
 public:
-    Students(std::string name, int age, std::string course, int userId, int year)
+    Students(std::string name, int age, std::string course, int studId, int year)
     {
         studAge = age;
         studName = name;
         studCourse = course;
-        id = userId;
+        id = studId;
         yearLevel = year;
         mathSub = 0;
         engSub = 0;
@@ -89,7 +90,10 @@ public:
     int getId() {
         return id;
     }
+    int getMath() {
 
+        return mathSub;
+    }
 
     void showStudents()
     {
@@ -113,6 +117,13 @@ public:
         std::cout << "\n==================================================\n";
     }
 
+   
+    void bestStudMath() {
+      
+        std::cout << studName << std::setw(10) <<  mathSub << "\n";
+    
+    }
+
     void calcAverage() {
       averageGrade = float(mathSub + engSub + filSub + mapehSub + scieSub) / 5;
     }
@@ -125,6 +136,8 @@ private:
     Students* studArr[50] = {nullptr};
     int studentArrSize;
     Students* tempHolder;
+    int viewBestDecider;
+    bool flagViewBest = true;
 public:
     StudentManagement()
     {
@@ -154,6 +167,88 @@ public:
         }
     }
 
+   
+
+    void viewBest() {
+            
+  
+
+            for (int i = 0; i < studentArrSize; i++) 
+            {
+
+                    
+
+
+                    while (flagViewBest)
+                    
+                    {
+
+                        std::cout << "\n -----------------------------------\n";
+
+                        std::cout << "\n   Please choose actions to perform\n"
+                            << "\n";
+
+                        std::cout << "                 Best in Math[1]"
+                            << "\n\n";
+                        std::cout << "              Best in English[2]"
+                            << "\n\n";
+                        std::cout << "             Best in Filipino[3]"
+                            << "\n\n";
+                        std::cout << "                Best in MAPEH[4]"
+                            << "\n\n";
+                        std::cout << "              Best in Science[5]"
+                            << "\n\n";
+                        std::cout << "                      Exit[6]"
+                            << "\n";
+
+                        std::cout << "\n -----------------------------------\n";
+
+                        std::cin >> viewBestDecider;
+                        switch (viewBestDecider)
+                        {
+
+                        case 1:
+                            std::cout << "\n==================================================\n";
+
+                            std::cout << "Name: " << std::setw(10) << "Math: " << "\n";
+                           
+                            for (int i = 0; i < studentArrSize; i++)
+                            {
+
+                                for (int j = 0; j < studentArrSize - i - 1; j++) {
+
+                                    if (studArr[i] != nullptr && studArr[j]->getMath() < studArr[j + 1]->getMath())
+                                    {
+
+                                        tempHolder = studArr[j];
+                                        studArr[j] = studArr[j + 1];
+                                        studArr[j + 1] = tempHolder;
+
+                                    }
+
+                                }
+                                studArr[i]->bestStudMath();
+                            };
+
+                            std::cout << "\n==================================================\n";
+
+                         
+
+                            break;
+
+                        case 6:  flagViewBest = false;
+                            break;
+                        
+                        default: std::cout << "Operation not found.";
+
+                        }
+
+                    }
+
+            }
+    
+    }
+
     void showStud()
     {
      
@@ -161,9 +256,10 @@ public:
         {
 
             for (int j = 0; j < studentArrSize - i - 1; j++) {
+
                 if (studArr[i] != nullptr && studArr[i]->getStudName() > studArr[i + 1]->getStudName())
 
-                     tempHolder = studArr[j];
+                tempHolder = studArr[j];
                 studArr[j] = studArr[j + 1];
                 studArr[j + 1] = tempHolder;
                 
@@ -174,20 +270,20 @@ public:
 
 
 
-    void searchUser(std::string findUser)
+    void searchStud(std::string findStud)
     {
 
         for (int i = 0; i < studentArrSize; i++)
         {
-            if (studArr[i]->getStudName() == findUser)
+            if (studArr[i]->getStudName() == findStud)
             {
-                std::cout << "User  found."
+                std::cout << "Student  found."
                           << "\n";
                 studArr[i]->showStudents();
             }
             else
             {
-                std::cerr << "User not found."
+                std::cerr << "Student not found."
                           << "\n";
             }
         }
@@ -210,7 +306,7 @@ public:
             
             if (studArr[i]->getId() == idInput)
             {
-                std::cout << "User  found."
+                std::cout << "Student  found."
                     << "\n";
 
                 studArr[i]->showStudents();
@@ -308,7 +404,7 @@ public:
             }
             else
             {
-                std::cerr << "User not found."
+                std::cerr << "Student not found."
                     << "\n";
             }
 
@@ -333,7 +429,7 @@ public:
 
             if (studArr[i]->getId() == idInput)
             {
-                std::cout << "User  found."
+                std::cout << "Student  found."
                     << "\n";
 
                 studArr[i]->showStudents();
@@ -422,7 +518,7 @@ public:
             }
             else
             {
-                std::cerr << "User not found."
+                std::cerr << "Student not found."
                     << "\n";
             }
 
@@ -465,7 +561,10 @@ int main()
         std::cout << "            Edit Student [5]"
             << "\n\n";
         std::cout << "             Edit Grades [6]"
+            << "\n\n";
+        std::cout << "            View Best In [7]"
             << "\n";
+
 
         std::cout << "\n -----------------------------------\n";
 
@@ -523,11 +622,11 @@ int main()
             break;
         case 4:
 
-            std::cout << "Search user by full name: ";
+            std::cout << "Search student by full name: ";
 
             std::getline(std::cin >> std::ws, findStud);
 
-            studManagement.searchUser(findStud);
+            studManagement.searchStud(findStud);
 
             break;
 
@@ -535,6 +634,9 @@ int main()
             break;
 
         case 6: studManagement.editGrades();
+            break;
+
+        case 7: studManagement.viewBest();
             break;
 
         default:
